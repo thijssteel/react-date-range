@@ -102,7 +102,7 @@ class DateRange extends Component {
     this.props.onRangeFocusChange && this.props.onRangeFocusChange(focusedRange);
   }
   updatePreview(val) {
-    if (!val || !val.wasValid) {
+    if (!val) {
       this.setState({ preview: null });
       return;
     }
@@ -136,6 +136,7 @@ class DateRange extends Component {
 DateRange.defaultProps = {
   classNames: {},
   ranges: [],
+  dates: [],
   moveRangeOnFirstSelection: false,
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   disabledDates: [],
