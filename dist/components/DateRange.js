@@ -24,6 +24,10 @@ var _DayCell = require('./DayCell');
 
 var _utils = require('../utils.js');
 
+var _max = require('date-fns/max');
+
+var _max2 = _interopRequireDefault(_max);
+
 var _isWithinInterval = require('date-fns/isWithinInterval');
 
 var _isWithinInterval2 = _interopRequireDefault(_isWithinInterval);
@@ -119,9 +123,9 @@ var DateRange = function (_Component) {
       }
 
       // reverse dates if startDate before endDate
-      var hasBeenReversed = false;
+      var isStartDateSelected = focusedRange[1] === 0;
       if ((0, _isBefore2.default)(endDate, startDate)) {
-        hasBeenReversed = true;
+        isStartDateSelected = !isStartDateSelected;
         var _ref = [endDate, startDate];
         startDate = _ref[0];
         endDate = _ref[1];
@@ -135,12 +139,10 @@ var DateRange = function (_Component) {
       });
 
       if (inValidDatesWithinRange.length > 0) {
-        if (hasBeenReversed) {
-          var minDate = new Date(Math.min.apply(null, inValidDatesWithinRange));
-          startDate = new Date(minDate.getTime() + 24 * 60 * 60 * 1000);
+        if (isStartDateSelected) {
+          startDate = (0, _addDays2.default)((0, _max2.default)(disabledDates), 1);
         } else {
-          var _maxDate = new Date(Math.max.apply(null, inValidDatesWithinRange));
-          endDate = new Date(_maxDate.getTime() - 24 * 60 * 60 * 1000);
+          endDate = (0, _addDays2.default)((0, _min2.default)(disabledDates), -1);
         }
       }
 
