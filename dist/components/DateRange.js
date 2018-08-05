@@ -44,6 +44,10 @@ var _differenceInCalendarDays = require('date-fns/differenceInCalendarDays');
 
 var _differenceInCalendarDays2 = _interopRequireDefault(_differenceInCalendarDays);
 
+var _isAfter = require('date-fns/isAfter');
+
+var _isAfter2 = _interopRequireDefault(_isAfter);
+
 var _isBefore = require('date-fns/isBefore');
 
 var _isBefore2 = _interopRequireDefault(_isBefore);
@@ -140,9 +144,13 @@ var DateRange = function (_Component) {
 
       if (inValidDatesWithinRange.length > 0) {
         if (isStartDateSelected) {
-          startDate = (0, _addDays2.default)((0, _max2.default)(disabledDates), 1);
+          startDate = (0, _addDays2.default)((0, _max2.default)(disabledDates.filter(function (date) {
+            return (0, _isBefore2.default)(date, endDate);
+          })), 1);
         } else {
-          endDate = (0, _addDays2.default)((0, _min2.default)(disabledDates), -1);
+          endDate = (0, _addDays2.default)((0, _min2.default)(disabledDates.filter(function (date) {
+            return (0, _isAfter2.default)(date, startDate);
+          })), -1);
         }
       }
 

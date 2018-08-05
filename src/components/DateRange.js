@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 import Calendar from './Calendar.js';
 import { rangeShape } from './DayCell';
 import { findNextRangeIndex, generateStyles } from '../utils.js';
-import { isBefore, differenceInCalendarDays, addDays, min, isWithinInterval, max } from 'date-fns';
+import {
+  isBefore,
+  isAfter,
+  differenceInCalendarDays,
+  addDays,
+  min,
+  isWithinInterval,
+  max,
+} from 'date-fns';
 import classnames from 'classnames';
 import coreStyles from '../styles';
 
@@ -60,9 +68,9 @@ class DateRange extends Component {
 
     if (inValidDatesWithinRange.length > 0) {
       if (isStartDateSelected) {
-        startDate = addDays(max(disabledDates), 1);
+        startDate = addDays(max(disabledDates.filter(date => isBefore(date, endDate))), 1);
       } else {
-        endDate = addDays(min(disabledDates), -1);
+        endDate = addDays(min(disabledDates.filter(date => isAfter(date, startDate))), -1);
       }
     }
 
