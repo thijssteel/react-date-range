@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Calendar from './Calendar.js';
 import { rangeShape } from './DayCell';
 import { findNextRangeIndex, generateStyles } from '../utils.js';
-import { isBefore, differenceInCalendarDays, addDays, min, isWithinInterval } from 'date-fns';
+import { isBefore, differenceInCalendarDays, addDays, min, isWithinInterval, max } from 'date-fns';
 import classnames from 'classnames';
 import coreStyles from '../styles';
 
@@ -45,9 +45,9 @@ class DateRange extends Component {
     }
 
     // reverse dates if startDate before endDate
-    let hasBeenReversed = false;
+    let isStartDateSelected = focusedRange[1] === 0;
     if (isBefore(endDate, startDate)) {
-      hasBeenReversed = true;
+      isStartDateSelected = !isStartDateSelected;
       [startDate, endDate] = [endDate, startDate];
     }
 
@@ -59,12 +59,10 @@ class DateRange extends Component {
     );
 
     if (inValidDatesWithinRange.length > 0) {
-      if (hasBeenReversed) {
-        const minDate = new Date(Math.min.apply(null, inValidDatesWithinRange));
-        startDate = new Date(minDate.getTime() + 24 * 60 * 60 * 1000);
+      if (isStartDateSelected) {
+        startDate = addDays(max(disabledDates), 1);
       } else {
-        const maxDate = new Date(Math.max.apply(null, inValidDatesWithinRange));
-        endDate = new Date(maxDate.getTime() - 24 * 60 * 60 * 1000);
+        endDate = addDays(min(disabledDates), -1);
       }
     }
 

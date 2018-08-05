@@ -360,7 +360,7 @@ export default class Main extends Component {
             moveRangeOnFirstSelection={false}
             ranges={[this.state.dateRangeWithDisabled.selection]}
             className={'PreviewArea'}
-            disabledDates={[new Date()]}
+            disabledDates={[new Date(), addDays(new Date(), 3)]}
             minDate={new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000)}
           />
         </Section>
